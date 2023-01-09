@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 mt-4">
+            <h2 class="text-center">Verificar invitado</h2>
+            <form action="/verificarInvitado" method="post" class="mt-4">
+                <label for="">Id</label>
+                <input class="form-control" type="text" name="id">
+                <button class="btn btn-primary mt-3">Verificar</button>
+            </form>
+        </div>
+        <div class="col-md-9 mt-4">
+            <h2 class="text-center">Mis invitados</h2>
+            <div class="">
+                <table class="table table-light table-striped">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>apellido</th>
+                            <th>mesa</th>
+                            <th>Estado</th>
+                            <th>hora de llegada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each invitados}}
+                        <tr>
+                            <td>{{id}}</td>
+                            <td>{{apellido}}</td>
+                            <td>{{mesa}}</td>
+                            <td>{{nombre_estado}}</td>
+                            <td>{{hora_llegada}}</td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+eliminar invitacion <br>
+ver enlace de confirmacion(qr)

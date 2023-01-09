@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+    <link rel="stylesheet" href="/bootstrap.min.css">
+
+    <title>Document</title>
+</head>
+<body>
+    {{>navbar}}
+    
+    {{#if sucedio}}
+        <div class="container">
+            <div class="row">
+                <div class="col md-4">
+                    <div class="alert alert-success alert-simissible fade show" role="alert">
+                        {{sucedio}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+
+     {{#if mensaje}}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="alert alert-success alert-simissible fade show" role="alert">
+                        {{mensaje}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/if}}
+   <!-- JavaScript Bundle with Popper -->
+
+   {{{body}}}
+<script src="bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
