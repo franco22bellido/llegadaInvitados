@@ -1,5 +1,5 @@
 import express from 'express'; 
-import {isLoggedIn} from '../lib/authSesion.js';
+import {isLoggedIn, isNotLoggedin} from '../lib/authSesion.js';
 
 //controllers
 import {renderRegister, renderLogin, authenticateRegister, authenticateLogin} from '../controllers/auth_controllers.js';
@@ -10,10 +10,10 @@ import {renderRegister, renderLogin, authenticateRegister, authenticateLogin} fr
 const rutasAuth = express.Router();
 
 
-rutasAuth.get('/register', renderRegister);
-rutasAuth.post('/register', authenticateRegister);
-rutasAuth.get('/login', renderLogin);
-rutasAuth.post('/login', authenticateLogin);
+rutasAuth.get('/register',[isNotLoggedin], renderRegister);
+rutasAuth.post('/register',[isNotLoggedin], authenticateRegister);
+rutasAuth.get('/login',[isNotLoggedin], renderLogin);
+rutasAuth.post('/login',[isNotLoggedin], authenticateLogin);
 
 rutasAuth.get('/logout', function(req, res, next){
     req.logout(function(err) {

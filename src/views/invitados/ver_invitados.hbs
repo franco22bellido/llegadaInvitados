@@ -7,6 +7,16 @@
                 <input class="form-control" type="text" name="id">
                 <button class="btn btn-primary mt-3">Verificar</button>
             </form>
+            <form action="/eliminarInvitado" method="post" class="mt-4">
+                <label for="">Id</label>
+                <input class="form-control" type="text" name="id">
+                <button class="btn btn-danger mt-3">eliminar</button>
+            </form>
+            <form action="/verInvitacion" method="get" class="mt-4">
+                <label for="">Id</label>
+                <input class="form-control" type="text" name="id">
+                <button class="btn btn-success mt-3">ver invitación</button>
+            </form>
         </div>
         <div class="col-md-9 mt-4">
             <h2 class="text-center">Mis invitados</h2>
@@ -29,6 +39,7 @@
                             <td>{{mesa}}</td>
                             <td>{{nombre_estado}}</td>
                             <td>{{hora_llegada}}</td>
+                            
                         </tr>
                         {{/each}}
                     </tbody>
