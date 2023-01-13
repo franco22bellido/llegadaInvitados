@@ -1,8 +1,7 @@
 import pool from '../database.js';
 import jwt from 'jsonwebtoken';
 import { toString } from 'qrcode';
-import os from 'os';
-
+import createQr from '../lib/createQr.js';
 
 
 export const ver_invitados = async (req, res) => {
@@ -82,6 +81,8 @@ export const crearInvitado = async (req, res) => {
     try {
         const { apellido, mesa } = req.body;
         let id_usuario = req.user.id;
+        if(!apellido || !mesa) throw new Error('campos vacios');
+
 
         let newInvitado = {
             apellido,
@@ -106,21 +107,14 @@ export const crearInvitado = async (req, res) => {
 
         const url = `http://${req.headers.host}/verificarInvitado/${token}`;
 
-        toString(url, { type: 'svg' }, (err, data) => {
-            if (err) return;
-
-            let position = data.indexOf(`d="M4`) + 3;
-            let positionEnd = data.indexOf(`"/></svg>`);
-            let qrElement = `${data.substring(position, positionEnd)}`;
-
-
-            res.render('invitados/crear_invitado', { qrElement });
-        });
+        const qrElement = await createQr(url);
+        
+        res.render('invitados/crear_invitado', { qrElement });
 
 
     } catch (error) {
         req.flash('message', error.message);
-        res.redirect('/');
+        res.redirect('/crearinvitado');
     }
 }
 
@@ -130,6 +124,8 @@ export const crearInvitado = async (req, res) => {
 export const eliminarInvitado = async (req, res) => {
     try {
         const { id } = req.body;
+        
+        if(!id) throw new Error('campo vacio');
         const result =await pool.query(`delete from invitados where id = ?`, [id]);
         if(result.affectedRows== 0) throw new Error('invitado no encontrado');
         res.redirect('/');
@@ -143,27 +139,19 @@ export const eliminarInvitado = async (req, res) => {
 export const verInvitacion = async (req, res) => {
     try {
         const { id } = req.query
-        
+        if(!id) throw new Error('campo vacio');
         const id_usuario = req.user.id;
        
         const result = await pool.query(`select * from invitados where id =? and id_usuario =?`,[id,id_usuario]);
 
-        if(!result[0].token) throw new Error('invitado no encontrado');
+        if(!result[0].token) throw new Error('token no encontrado o invitado verificado');
 
         const token = result[0].token;
         
         const url = `http://${req.headers.host}/verificarInvitado/${token}`;
-        
-        toString(url, { type: 'svg' }, (err, data) => {
-            if (err) return;
-
-            let position = data.indexOf(`d="M4`) + 3;
-            let positionEnd = data.indexOf(`"/></svg>`);
-            let qrElement = `${data.substring(position, positionEnd)}`;
-
-
-            res.render('invitados/crear_invitado', { qrElement });
-        });       
+        const qrElement = await createQr(url);
+     
+        res.render('invitados/crear_invitado', { qrElement });
 
 
     } catch (error) {

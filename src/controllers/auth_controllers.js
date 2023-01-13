@@ -9,7 +9,7 @@ export const renderRegister = (req ,res)=>{
 export const authenticateRegister =  async(req, res)=>{
         try {
             const {username, password} = req.body;
-
+            if(!username || password) throw new Error('campos vacios');
             const passEncrip = await helpers.encriptar(password);
             let newUser = {
                 nombre_usuario: username,
@@ -19,7 +19,8 @@ export const authenticateRegister =  async(req, res)=>{
             res.redirect('/login');
 
         } catch (error) {
-            res.json(error.message);    
+            req.flash('message', error.message);
+            res.redirect('/register');
         }
 };
 
