@@ -180,6 +180,8 @@
   "scripts": {
     "start": "npm i && node ./src/index.js"
   },
+  "type": "module"
+  ,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/franco22bellido/llegadaInvitados.git"
