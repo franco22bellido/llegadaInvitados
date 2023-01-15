@@ -7,6 +7,21 @@ import mysql_store from 'express-mysql-session';
 import {databaseKeys} from './keys.js';
 import pasaporte from './lib/passport.js'; 
 import passport from 'passport';
+import pool from './database.js';
+
+async function conectar() {
+    try {
+        await pool.getConnection();
+        console.log('db conectada');
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+
+conectar();
+
 
 //importar rutas
 import auth from './routes/auth.js';

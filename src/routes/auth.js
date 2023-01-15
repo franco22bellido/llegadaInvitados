@@ -1,6 +1,7 @@
 import express from 'express'; 
 import {isLoggedIn, isNotLoggedin} from '../lib/authSesion.js';
 
+
 //controllers
 import {renderRegister, renderLogin, authenticateRegister, authenticateLogin} from '../controllers/auth_controllers.js';
 
@@ -14,6 +15,14 @@ rutasAuth.get('/register',[isNotLoggedin], renderRegister);
 rutasAuth.post('/register',[isNotLoggedin], authenticateRegister);
 rutasAuth.get('/login',[isNotLoggedin], renderLogin);
 rutasAuth.post('/login',[isNotLoggedin], authenticateLogin);
+rutasAuth.get('/prueba', async(req, res)=>{
+    try {
+      
+      console.log("holamundo");
+    } catch (error) {
+      console.log(error.message);
+    }
+});
 
 rutasAuth.get('/logout', function(req, res, next){
     req.logout(function(err) {
