@@ -9,18 +9,7 @@ import pasaporte from './lib/passport.js';
 import passport from 'passport';
 import pool from './database.js';
 
-async function conectar() {
-    try {
-        await pool.getConnection();
-        console.log('db conectada');
-    } catch (error) {
-        console.log(error);
-    }
 
-}
-
-
-conectar();
 
 
 //importar rutas

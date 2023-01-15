@@ -1,5 +1,14 @@
 import {createPool} from 'mysql2/promise'
 import { databaseKeys } from './keys.js';
 
-const pool = createPool(databaseKeys)
-export default pool;
+const newConection = await createPool(databaseKeys).getConnection()
+.then((conecction)=>{
+    console.log("conectado")
+    return conecction
+}).catch((err)=>{
+    return console.log(err)
+});
+
+
+
+export default newConection;

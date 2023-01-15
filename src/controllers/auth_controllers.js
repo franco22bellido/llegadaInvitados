@@ -13,9 +13,9 @@ export const authenticateRegister =  async(req, res)=>{
             const passEncrip = await helpers.encriptar(password);
             let newUser = {
                 nombre_usuario: username,
-                contraseña: passEncrip
+                password: passEncrip
             }
-            const result = await conecction.query(`insert into usuarios set ?`, [newUser] );
+            await conecction.query(`insert into usuarios set ?`, [newUser] );
             res.redirect('/login');
 
         } catch (error) {

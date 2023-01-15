@@ -1,7 +1,7 @@
 export const databaseKeys = {
-    host: process.env.HOST || 'containers-us-west-65.railway.app',
-    user: process.env.USER || 'newuser',
-    password: process.env.PASSWORD ||'SbFIbRoe31if47FRiWqT',
-    database: process.env.DATABASE || 'railway',
-    port: process.env.port || 6259,
+    host: process.env.HOST || 'localhost',
+    user: process.env.USER || 'franco',
+    password: process.env.PASSWORD ||'12345aAA',
+    database: process.env.DATABASE || 'invitados_db',
+    port: process.env.port || 3306,
 };

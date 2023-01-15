@@ -10,13 +10,14 @@ passport.use('local.login', new localStrategy({
 }, async(req, username, password, done)=>{
   
     try {
-        const result = await conecction.query(`select * from usuarios where nombre_usuario =?`,[username]);
-        if(result.length < 1) throw new Error('usuario no encontrado');
-        const user = result[0];
+        const [rows] = await conecction.query(`select * from usuarios where nombre_usuario =?`,[username]);
+        if(rows.length < 1) throw new Error('usuario no encontrado');
+        const user = rows[0];
+        
 
         //comparar contraseñas
-        const validarPass = await helpers.comparePass(password, user.contraseña);
-        console.log(validarPass);
+        
+        const validarPass = await helpers.comparePass(password, user.password);
         if(!validarPass) throw new Error('la contraseña es incorrecta');
         done(null, user);
 
@@ -34,8 +35,8 @@ passport.serializeUser((user, done)=>{
 });
 
 passport.deserializeUser(async (id, done)=>{
-    const result = await conecction.query('SELECT * FROM usuarios where id = ? ',[id]);
-    done(null, result[0]);
+    const [rows] = await conecction.query('SELECT * FROM usuarios where id = ? ',[id]);
+    done(null, rows[0]);
 });
 
     

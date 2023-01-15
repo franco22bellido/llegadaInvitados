@@ -1,6 +1,6 @@
 import express from 'express'; 
 import {isLoggedIn, isNotLoggedin} from '../lib/authSesion.js';
-
+import pool from  '../database.js';
 
 //controllers
 import {renderRegister, renderLogin, authenticateRegister, authenticateLogin} from '../controllers/auth_controllers.js';
@@ -17,8 +17,11 @@ rutasAuth.get('/login',[isNotLoggedin], renderLogin);
 rutasAuth.post('/login',[isNotLoggedin], authenticateLogin);
 rutasAuth.get('/prueba', async(req, res)=>{
     try {
-      
+      const [result] = await pool.query('select 1 + 1');
+      const franco = result;
+      console.log(franco);
       console.log("holamundo");
+      res.status(200).json('holamundo');
     } catch (error) {
       console.log(error.message);
     }

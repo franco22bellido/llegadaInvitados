@@ -12,7 +12,7 @@ helpers.comparePass = async(password, savedPassword)=>{
     try {
         return await bcrypt.compare(password, savedPassword);
     } catch (error) {
-        
+        console.log(error);
     }
 }
 export default helpers;

@@ -6,14 +6,14 @@ import createQr from '../lib/createQr.js';
 
 export const ver_invitados = async (req, res) => {
     try {
-
-
-        const invitados = await pool.query(`
+        
+        const [rows] = await pool.query(`
         select i.id, i.apellido,i.mesa, nombre_estado, hora_llegada from invitados i
         left join estados e on i.verificado = e.id
         where id_usuario =?`, [req.user.id]);
-
-        res.render('invitados/ver_invitados', { invitados });
+        const invitados = rows
+        
+        res.render('invitados/ver_invitados',  {invitados} );
 
     } catch (error) {
         req.flash('message', error.message);
@@ -27,16 +27,15 @@ export const verificarInvitado = async (req, res) => {
     try {
         const { id } = req.body;
         if (!id) throw new Error("campo id vacio");
-
+        
 
         const verificar =await  pool.query(`
         update invitados set verificado = true,
-        token = null,
         hora_llegada = current_timestamp()
         where id =? and id_usuario =?`, [id, req.user.id]);
 
 
-        // res.redirect('/');
+        res.redirect('/');
 
     } catch (error) {
         req.flash('message', error.message);
@@ -50,13 +49,12 @@ export const verificarinvitadoToken = async (req, res) => {
     try {
         const { token } = req.params;
 
-        const { id_invitado, id_usuario } = jwt.verify(token, req.user.contraseña);
+        const { id_invitado, id_usuario } = jwt.verify(token, req.user.password);
 
         if (id_usuario != req.user.id) throw new Error('no te pertence ese invitado')
 
         await pool.query(`
         update invitados set verificado = true,
-        token = null,
         hora_llegada = current_timestamp()
         where id =? and id_usuario =?`, [id_invitado, id_usuario]);
 
@@ -90,9 +88,9 @@ export const crearInvitado = async (req, res) => {
             id_usuario
         }
 
-        const result = await pool.query('insert into invitados set ?', [newInvitado]);
-
-        const token = jwt.sign({ id_usuario, id_invitado: result.insertId }, req.user.contraseña);
+        const [result] = await pool.query('insert into invitados set ?', [newInvitado]);
+        
+        const  token = jwt.sign({ id_usuario, id_invitado: result.insertId }, req.user.password);
 
         /**
          * el token lo guardo de nuevo para poder verlo en la tabla principal con su qr
@@ -124,9 +122,10 @@ export const crearInvitado = async (req, res) => {
 export const eliminarInvitado = async (req, res) => {
     try {
         const { id } = req.body;
-        
+        let id_usuario = req.user.id;
         if(!id) throw new Error('campo vacio');
-        const result =await pool.query(`delete from invitados where id = ?`, [id]);
+        const [result] =await pool.query(`delete from invitados where id = ? and id_usuario = ?`, [id, id_usuario]);
+        
         if(result.affectedRows== 0) throw new Error('invitado no encontrado');
         res.redirect('/');
     } catch (error) {
@@ -142,11 +141,11 @@ export const verInvitacion = async (req, res) => {
         if(!id) throw new Error('campo vacio');
         const id_usuario = req.user.id;
        
-        const result = await pool.query(`select * from invitados where id =? and id_usuario =?`,[id,id_usuario]);
+        const [rows] = await pool.query(`select * from invitados where id =? and id_usuario =?`,[id,id_usuario]);
+        
+        if(!rows[0].token) throw new Error('token no encontrado');
 
-        if(!result[0].token) throw new Error('token no encontrado o invitado verificado');
-
-        const token = result[0].token;
+        const token = rows[0].token;
         
         const url = `http://${req.headers.host}/verificarInvitado/${token}`;
         const qrElement = await createQr(url);
