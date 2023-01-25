@@ -1,0 +1,45 @@
+<div class="container p-5">
+    <div class="row">
+        <div class="col-md-4">
+
+            {{#if qrElement}}
+            <svg width="300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61 61" shape-rendering="crispEdges"><path fill
+            ="#ffffff" d="M0 0h61v61H0z"/><path stroke="#000000" d="{{qrElement}}"/></svg>
+            {{/if}}
+
+            <h3>QR invitacion</h3>
+compartir qr en jpg
+o salvar jpg
+enviar por mail
+ir a inicio
+crear otro
+o mejor, que el qr este en la misma página anterior
+
+        </div>
+        <div class="col md-8 mx-auto">
+            <div class="card text-center">
+                <div class="card-header">
+                    <h3>Crear invitado</h3>
+                </div>  
+                <div class="card-body">
+                    <form action="/crearinvitado" method="post">
+                        <div class="form-group m-3">
+                            <label for="">familia</label>
+                            <input type="text" name="apellido" class="form-control">
+                        </div>
+                        <div class="form-group m-3">
+                            <label for="">Mesa</label>
+                            <input type="text" name="mesa"  class="form-control">
+                        </div>
+                        <div class="form-group m-3">
+                            <button class="btn btn-success btn-block">
+                                    Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>  
+            </div>
+        </div>
+    </div>
+
+</div>

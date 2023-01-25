@@ -1,0 +1,7 @@
+idea: un usuario necesita crear una lista de invitados para un evento.
+entonces los registra en su perfil y a medida que ellos van llegando,
+se los van verificando y, se van mostrando en la pantalla.
+
+la idea surge de las pantallas de aviones.
+
+la verificación se puede hacer con jwt o con un qr.
